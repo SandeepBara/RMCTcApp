@@ -5,9 +5,13 @@ import { CommonActions, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showToast } from '../utils/toast';
 import styles from '../Constants/css';
+import { useAuthToken } from '../utils/auth';
+import axios from 'axios';
+import { logoutApi } from '../api/endpoint';
 const HeaderNavigation = ({ title, showBack = true, customBackAction }) => {
   const navigation = useNavigation();
   const [showConfirm, setShowConfirm] = useState(false);
+  const token = useAuthToken();
 
   const handleBack = () => {
     if (customBackAction) {
@@ -24,17 +28,13 @@ const HeaderNavigation = ({ title, showBack = true, customBackAction }) => {
 
   const handleLogout = async () => {
     try {
+      const response = await axios.post(logoutApi,{},{headers:{ Authorization: `Bearer ${token}`}});
       await AsyncStorage.removeItem('token');
       await AsyncStorage.removeItem('userDetails');
 
       showToast('success', 'Logged out successfully!');
 
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: 'LoginScreen' }],
-        }),
-      );
+      navigation.navigate('Login');
     } catch (error) {
       showToast('error', 'Logout failed!');
     }
@@ -58,10 +58,10 @@ const HeaderNavigation = ({ title, showBack = true, customBackAction }) => {
       </TouchableOpacity>
       {/* Logout button */}
       <TouchableOpacity
-        style={styles.button}
+        style={[styles.button,{backgroundColor:"#ec3636ff",color:"#fff"}]}
         onPress={() => setShowConfirm(true)}
       >
-        <Text style={styles.icon}>Logout</Text>
+        <Text style={[{color:"#fff"}]}>Logout</Text>
       </TouchableOpacity>
 
       {/* Confirmation Modal */}
@@ -102,3 +102,5 @@ const HeaderNavigation = ({ title, showBack = true, customBackAction }) => {
 };
 
 export default HeaderNavigation;
+
+

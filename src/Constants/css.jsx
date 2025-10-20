@@ -486,5 +486,48 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'right',
   },
+  button: {
+    backgroundColor: Colors.background,
+    borderRadius: 6,
+    alignItems: 'center',
+    marginVertical: 10,
+    width: 50,
+    height: 30,
+    justifyContent: 'center',
+    marginLeft: 'auto',
+    marginRight: 20,
+  },
+  modalBox: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+    alignItems: 'center',
+  },
+  modalMessage: {
+    fontSize: 14,
+    textAlign: 'center',
+    marginBottom: 20,
+    color: '#333',
+  },
+  modalActions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  cancelButton: {
+    backgroundColor: '#ccc',
+  },
+  logoutButton: {
+    backgroundColor: Colors.primary,
+  },
+  cancelText: {
+    color: '#000',
+    fontWeight: 'bold',
+  },
+  logoutText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
 });
 export default styles;

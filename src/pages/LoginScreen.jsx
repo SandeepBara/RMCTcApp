@@ -21,7 +21,7 @@ import {
   responsiveFontSize,
 } from 'react-native-responsive-dimensions';
 import Colors from '../Constants/Colors';
-import { loginApi } from '../api/enpoint';
+import { loginApi } from '../api/endpoint';
 
 const LoginScreen = ({ navigation }) => {
   const [checked, setChecked] = useState(false);

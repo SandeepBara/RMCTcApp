@@ -10,7 +10,12 @@ const Colors = {
   white: '#ffffff',
   black: '#000000',
   headignColor:'#173a7b',
-  borderColor:'#3498db'
+  borderColor:'#3498db',
+  blue: '#1e3a8a',    // blue-900
+  green: '#059669',   // green-600
+  red: '#dc2626',     // red-600
+  grayText: '#4b5563', // gray-600
+  lightGray: '#e5e7eb',// gray-200
 };
 
 export default Colors;

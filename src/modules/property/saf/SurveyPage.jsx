@@ -3,18 +3,18 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useAuthToken, useAuthUser } from '../../../utils/auth';
 import axios from 'axios';
-import { apartmentByOldWardApi, newWardByOldWardApi, propertyMasterDataApi, safDtlForVerificationApi } from '../../../api/enpoint';
-import HeaderNavigation from '../../../componets/HeaderNavigation';
+import { apartmentByOldWardApi, newWardByOldWardApi, propertyMasterDataApi, safDtlForVerificationApi } from '../../../api/endpoint';
+import HeaderNavigation from '../../../Components/HeaderNavigation';
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import Colors from '../../../Constants/Colors';
-import VerificationCard from "../component/VerificationCard";
+import VerificationCard from "./component/VerificationCard";
 import LinearGradient from 'react-native-linear-gradient';
 import { Dropdown } from 'react-native-element-dropdown';
 import { TextInput } from 'react-native-gesture-handler';
 import MonthPicker from 'react-native-month-year-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { formatLocalDate } from "../../../utils/common";
-import VerificationPreviewModal from "../component/VerificationPreviewModal";
+import VerificationPreviewModal from "./component/VerificationPreviewModal";
 
 
 function SurveyPage() {
@@ -143,40 +143,6 @@ function SurveyPage() {
     });
     setValidationErrors((prev) => ({ ...prev, [name]: null }));
   };
-
-  // const handleFloorChange = (floorId, fieldName, value) => {
-  //   setFormData((prev) => {
-  //     console.log(prev?.floor?.map((f) =>
-  //         f.id === floorId ? { ...f, [fieldName]: value } : {id:floorId, [fieldName]: value }
-  //       ));
-  //     const updatedFloors = prev.floor
-  //       ? prev.floor.map((f) =>
-  //         f.id === floorId ? { ...f, [fieldName]: value } : {id:floorId, [fieldName]: value }
-  //       )
-  //       : [{ id: floorId, [fieldName]: value }];
-  //     console.log("updatedFloors",updatedFloors);
-  //     console.log("floorId",floorId);
-
-  //     return { ...prev, floor: updatedFloors };
-  //   });
-
-  //   setVerifyData((prev) => {
-  //     const updatedVerifyFloors = prev.floor
-  //       ? prev.floor.map((f) =>
-  //         f.id === floorId
-  //           ? { ...f, [fieldName]: value === safData?.floor?.find((sf) => sf.id === floorId)?.[fieldName] }
-  //           : f
-  //       )
-  //       : [{ id: floorId, [fieldName]: value === safData?.floor?.find((sf) => sf.id === floorId)?.[fieldName] }];
-
-  //     return { ...prev, floor: updatedVerifyFloors };
-  //   });
-  //   setValidationErrors((prev) => {
-  //     const floorErrors = prev.floor || {};
-  //     const newFloorErrors = { ...floorErrors, [floorId]: { ...floorErrors[floorId], [fieldName]: null } };
-  //     return { ...prev, floor: newFloorErrors };
-  //   });
-  // };
 
   const handleFloorChange = (floorId, fieldName, value) => {
       setFormData((prev) => {

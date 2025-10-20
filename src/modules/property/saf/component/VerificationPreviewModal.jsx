@@ -1,8 +1,9 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
-import Colors from '../../../Constants/Colors';
-import {formatLocalDate} from "../../../utils/common";
+import Colors from '../../../../Constants/Colors';
+import {formatLocalDate} from "../../../../utils/common";
+import GeoTagModal from "./GeoTagModal";
 
 // NOTE: I am keeping 'onClose' and 'handleSubmitPreview' functions,
 // as they are necessary for the button actions in the modal footer.
@@ -16,6 +17,7 @@ function VerificationPreviewModal({
     verificationData={},
     extraFloor=[], 
 }) {
+    const [isGeoTagModal,setIsGeoTagModal] = useState(false);
     console.log("masterData",masterData);
     const getLabelById = useCallback((id, list, key = 'wardNo') => {
         if (!id || !list) return 'N/A';
@@ -37,6 +39,12 @@ function VerificationPreviewModal({
 
 
     const isNotVacantLand = verifiedPropertyLabel!= 4;
+
+    const capturerImag = async(newGeoTagData)=>{
+        console.log(newGeoTagData);
+    }
+
+
 
     return (
         <Modal
@@ -294,6 +302,26 @@ function VerificationPreviewModal({
                     </View>
                 </View>
             </View>
+            <>
+                <TouchableOpacity
+                    style={styles.getLocationButton}
+                    onPress={() => setIsGeoTagModal(true)}
+                >
+                    <Text style={styles.getLocationButtonText}>
+                    📍 Get Current Location
+                    </Text>
+                </TouchableOpacity>
+                <Text style={styles.locationHelpText}>
+                    * Location is required before capturing photos
+                </Text>
+            </>
+            {isGeoTagModal &&(
+                <GeoTagModal
+                    isRwh={verificationData?.isWaterHarvesting}
+                    onClose={()=>setIsGeoTagModal(false)} 
+                    onChange={capturerImag}
+                />
+            )}
         </Modal>
     );
 }

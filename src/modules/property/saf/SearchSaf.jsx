@@ -1,26 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import {
-    View,
-    StyleSheet,
-    ActivityIndicator,
-    Text,
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    TouchableOpacity,
-    Clipboard,
-} from 'react-native';
-import { getToken, useAuthToken } from '../../../utils/auth';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react'
+import { useAuthToken } from '../../../utils/auth';
 import axios from 'axios';
-import { safInboxApi } from '../../../api/endpoint';
+import { showToast } from '../../../utils/toast';
+import { ActivityIndicator, Clipboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import HeaderNavigation from '../../../Components/HeaderNavigation';
-import DataTable from "../../../Components/DataTable";
+import DataTable from '../../../Components/DataTable';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import Colors from '../../../Constants/Colors';
-import { showToast } from '../../../utils/toast';
-import { useNavigation } from '@react-navigation/native';
+import { safSearchApi } from '../../../api/endpoint';
+import { statusColor } from '../../../utils/common';
 
-function Inbox() {
+function SearchSaf() {
     const navigation = useNavigation();
     const [dataList, setDataList] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -44,13 +35,13 @@ function Inbox() {
         setIsLoading(true);
         try {
             const payload = {
-                    wardId: wardIds,
-                    keyWord: keyWord,
-                    page: currentPage,
-                    perPage: itemsPerPage,
-                };
-            const response = await axios.post(safInboxApi,
-                {...payload},
+                wardId: wardIds,
+                keyWord: keyWord,
+                page: currentPage,
+                perPage: itemsPerPage,
+            };
+            const response = await axios.post(safSearchApi,
+                { ...payload },
                 {
                     headers: { Authorization: `Bearer ${token}` },
                 });
@@ -77,6 +68,10 @@ function Inbox() {
 
     const renderItem = (item, index) => (
         <View key={index} style={styles.card}>
+            <View style={styles.row}>
+                <Text style={styles.cardLabel}>Status:</Text>
+                <Text style={[styles.value,{fontWeight:'bold'},statusColor(item?.appStatus)]}>{item?.appStatus}</Text>
+            </View>
             <View style={styles.row}>
                 <Text style={styles.cardLabel}>Ward No.:</Text>
                 <Text style={styles.value}>{item?.wardNo}</Text>
@@ -123,24 +118,17 @@ function Inbox() {
                 <Text style={styles.cardLabel}>Apply Date:</Text>
                 <Text style={styles.value}>{item?.applyDate}</Text>
             </View>
-
-            <View style={styles.row}>
-                <Text style={styles.cardLabel}>Forward Date:</Text>
-                <Text style={styles.value}>{item?.receivingDate}</Text>
-            </View>
-
             <View style={styles.buttonRow}>
                 <TouchableOpacity
                     style={styles.button1}
-                    onPress={() => navigation.navigate('SurveyPage', { id: item.id })}
+                    onPress={() => navigation.navigate('SafDueDetails', { id: item.id })}
                 >
-                    <Text style={styles.surveyButtonText}>Survey</Text>
+                    <Text style={styles.surveyButtonText}>View</Text>
                 </TouchableOpacity>
 
             </View>
         </View>
     );
-
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -174,10 +162,10 @@ function Inbox() {
                 )}
             </ScrollView>
         </KeyboardAvoidingView>
-    );
+    )
 }
 
-export default Inbox;
+export default SearchSaf;
 
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: 'white' },

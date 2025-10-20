@@ -1,3 +1,4 @@
+import styles from "../Constants/css";
 
 
 export const yesNoOptions = [
@@ -28,7 +29,15 @@ export const getLabelByValue = (options, value) => {
 };
 
 export const formatTimeAMPM = (dateStr) => {
-  const date = new Date(dateStr);
+  // FIX: Replace the incorrect colon before milliseconds with a period/dot
+  const correctedDateStr = dateStr.replace(/:(\d{3})$/, '.$1');
+
+  const date = new Date(correctedDateStr);
+  if (isNaN(date.getTime())) {
+    console.error(`Invalid Date string provided: ${dateStr}. Corrected: ${correctedDateStr}`);
+    // If date is invalid, return N/A or a clear error message
+    return "N/A (Invalid Date)";
+  }
   let hours = date.getHours();
   let minutes = date.getMinutes();
   const ampm = hours >= 12 ? "PM" : "AM";
@@ -38,10 +47,10 @@ export const formatTimeAMPM = (dateStr) => {
   return `${hours}:${minutes} ${ampm}`;
 };
 
-export const formatLocalDateTime = (dateStr,separator="-") => {
+export const formatLocalDateTime1 = (dateStr,separator="-") => {
   if (!dateStr) return "N/A";
 
-  const date = new Date(dateStr);
+  const date = new Date(dateStr);console.log("dateStr",formatLocalDate(dateStr));
   const day = String(date.getDate()).padStart(2, "0");
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const year = date.getFullYear();
@@ -51,10 +60,41 @@ export const formatLocalDateTime = (dateStr,separator="-") => {
 
   return `${day}${separator}${month}${separator}${year} ${hours}:${minutes}:${seconds}`;
 };
+
+export const formatLocalDateTime = (dateStr, separator = "-") => {
+  if (!dateStr) return "N/A";
+
+  // FIX: Replace the incorrect colon before milliseconds with a period/dot
+  const correctedDateStr = dateStr.replace(/:(\d{3})$/, '.$1');
+
+  const date = new Date(correctedDateStr);
+  if (isNaN(date.getTime())) {
+    console.error(`Invalid Date string provided: ${dateStr}. Corrected: ${correctedDateStr}`);
+    // If date is invalid, return N/A or a clear error message
+    return "N/A (Invalid Date)";
+  }
+
+
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Month is 0-indexed
+  const year = date.getFullYear();
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+
+  return `${day}${separator}${month}${separator}${year} ${hours}:${minutes}:${seconds}`;
+};
 export const formatLocalDate = (dateStr,separator="-") => {
   if (!dateStr) return "N/A";
-  
-  const date = new Date(dateStr);
+  // FIX: Replace the incorrect colon before milliseconds with a period/dot
+  const correctedDateStr = dateStr.replace(/:(\d{3})$/, '.$1');
+
+  const date = new Date(correctedDateStr);
+  if (isNaN(date.getTime())) {
+    console.error(`Invalid Date string provided: ${dateStr}. Corrected: ${correctedDateStr}`);
+    // If date is invalid, return N/A or a clear error message
+    return "N/A (Invalid Date)";
+  }
   const day = String(date.getDate()).padStart(2, "0");
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const year = date.getFullYear();
@@ -68,3 +108,22 @@ export const toTitleCase = (str) => {
     (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
   );
 };
+
+export const statusColor=(status="")=>{
+    const statusStr = String(status); 
+
+    if (/Approved/i.test(statusStr)) {
+        return { color: "#30843aaa" };
+    }
+    if (/Back To Citizen|BTC/i.test(statusStr)) {
+        return { color: "#e60d0db3" };
+    }
+    if (/Not/i.test(statusStr)) {
+        return { color: "#3969b8b3" };
+    }
+    
+    if (/Pending/i.test(statusStr)) {
+        return { color: "#71326db3" };
+    }
+    return { color: "#282628b3" };
+}

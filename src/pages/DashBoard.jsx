@@ -6,8 +6,8 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Header from '../layout/Header';
-import HeaderNavigation from "../componets/HeaderNavigation";
-import MenuTree from "../componets/MenuTree";
+import HeaderNavigation from "../Components/HeaderNavigation";
+import MenuTree from "../Components/MenuTree";
 
 const DashBoard = ({ navigation }) => {
   const [menuItems, setMenuItems] = useState([]);

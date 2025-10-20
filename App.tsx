@@ -10,6 +10,8 @@ import LoginScreen from "./src/pages/LoginScreen";
 import DashBoard from "./src/pages/DashBoard";
 import SafInbox from "./src/modules/property/saf/Inbox";
 import SurveyPage from "./src/modules/property/saf/SurveyPage"
+import SearchSaf from "./src/modules/property/saf/SearchSaf";
+import SafDetails from "./src/modules/property/saf/SafDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,7 +38,7 @@ function App() {
               component={DashBoard}
             />
             
-            {/* Field Verification Screen */}
+            {/* Property */}
             <Stack.Screen
               name="FieldVarification" 
               component={SafInbox}
@@ -45,7 +47,14 @@ function App() {
               name="SurveyPage" 
               component={SurveyPage}
             />
-            
+            <Stack.Screen
+              name="SearchAssesment" 
+              component={SearchSaf}
+            />
+            <Stack.Screen
+              name="SafDueDetails" 
+              component={SafDetails}
+            />
 
           </Stack.Navigator>
         </NavigationContainer>
