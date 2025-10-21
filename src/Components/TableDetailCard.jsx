@@ -32,7 +32,7 @@ function TableDetailCard({ title, note, headers = [], data = [] }) {
         }
 
         return data.map((item, index) => (
-            <View key={index} style={styles.tableBodyRow}>
+            <View key={`val-${index}`} style={styles.tableBodyRow}>
                 {item.cells.map((cellValue, cellIndex) => (
                     <Text key={cellIndex} style={[styles.tableCell, { width: COLUMN_WIDTH }]}>
                         {cellValue ? cellValue: 'NA'}
@@ -75,7 +75,7 @@ function TableDetailCard({ title, note, headers = [], data = [] }) {
                         >
                             <View style={[styles.tableRow, styles.tableHeader]}>
                                 {headers?.map((headerText, index) => (
-                                    <Text key={index} style={[styles.tableCell, styles.headerText, { width: COLUMN_WIDTH }]}>
+                                    <Text key={`head-${index}`} style={[styles.tableCell, styles.headerText, { width: COLUMN_WIDTH }]}>
                                         {headerText}
                                     </Text>
                                 ))}

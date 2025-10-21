@@ -12,25 +12,23 @@ import {
     Dimensions,
 } from "react-native";
 import axios from "axios";
-// Ensure you have installed this: npm install react-native-vector-icons
 import Feather from 'react-native-vector-icons/Feather';
 import {memoReceiptApi,FRONTEND_URL} from "../../../../api/endpoint";
 import Colors from "../../../../Constants/Colors";
 import { formatLocalDate } from "../../../../utils/common";
 import QRCodeComponent from "../../../../Components/QRCodeComponent";
+import { useAuthToken } from "../../../../utils/auth";
 
-const hostInfo = FRONTEND_URL;
-
-// ===============================================
-// --- SAMModal Component ---
-// ===============================================
 
 function SAMModal({ id, onClose, lag = "EN" }) {
     const [isFrozen, setIsFrozen] = useState(false);
     const [receiptData, setReceiptData] = useState({});
     const [qurCode, setQurCode] = useState(null);
     const [isHindi, setIsHindi] = useState(false);
-    const printRef = useRef(null); 
+    const printRef = useRef(null);     
+    const hostInfo = FRONTEND_URL;
+    const token = useAuthToken();
+
 
     useEffect(() => {
         // This ensures the initial language state is set based on 'lag' prop
@@ -55,7 +53,9 @@ function SAMModal({ id, onClose, lag = "EN" }) {
         if (!id) return;
         setIsFrozen(true);
         try {
-            const response = await axios.post(memoReceiptApi, { id });
+            const response = await axios.post(memoReceiptApi, { id },{
+                headers: { Authorization: `Bearer ${token}` },
+            });
             
             // Mock Data Structure
             const mockResponse = {
@@ -106,7 +106,6 @@ function SAMModal({ id, onClose, lag = "EN" }) {
         }
     };
     
-    // Check if data is loaded
     const isDataLoaded = Object.keys(receiptData).length > 0;
 
     const ReceiptContent = (
@@ -347,12 +346,8 @@ function SAMModal({ id, onClose, lag = "EN" }) {
 
 export default SAMModal;
 
-// ===============================================
-// --- Stylesheet ---
-// ===============================================
 
 const styles = StyleSheet.create({
-    // --- Modal & Control Bar Styles (CORRECTED/ADDED) ---
     modalOverlay: {
         flex: 1,
         backgroundColor: 'rgba(255, 251, 251, 0.96)', 
@@ -364,7 +359,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.white,
         borderRadius: 10,
         width: '100%',
-        maxWidth: 700, // Slightly reduced max width for better mobile preview
+        maxWidth: 700, 
         height: '90%', 
         elevation: 10,
         shadowColor: Colors.black,
@@ -372,7 +367,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 5,
     },
-    controlBar: { // ADDED
+    controlBar: { 
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -381,42 +376,40 @@ const styles = StyleSheet.create({
         borderBottomColor: Colors.borderColor,
         backgroundColor:Colors.background,
     },
-    title: { // ADDED
+    title: { 
         fontSize: 18,
         fontWeight: 'bold',
         color: Colors.primary,
     },
-    buttonGroup: { // ADDED
+    buttonGroup: { 
         flexDirection: 'row',
         alignItems: 'center',
     },
-    langButton: { // ADDED
+    langButton: { 
         paddingHorizontal: 12,
         paddingVertical: 6,
         borderRadius: 5,
         marginRight: 10,
     },
-    buttonText: { // ADDED
+    buttonText: { 
         color: Colors.white,
         fontSize: 14,
         fontWeight: '600',
     },
     closeButton: {
-        padding: 8, // Made padding consistent for touchable area
+        padding: 8, 
     },
 
-    contentArea: { // ADDED
+    contentArea: { 
         flex: 1,
         position: 'relative',
         backgroundColor: Colors.lightGray,
     },
-    scrollViewContent: { // ADDED
+    scrollViewContent: { 
         padding: 10,
         alignItems: 'center',
     },
-    
-    // Processing Overlays (ADDED/CORRECTED)
-    processingOverlay: { // ADDED
+    processingOverlay: { 
         position: 'absolute',
         top: 0,
         left: 0,
@@ -427,43 +420,41 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         zIndex: 10,
     },
-    processingText: { // ADDED
+    processingText: { 
         marginTop: 10,
         fontSize: 16,
         color: Colors.blue,
     },
-    emptyState: { // ADDED
+    emptyState: { 
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
         height: '100%',
     },
-    emptyText: { // ADDED
+    emptyText: { 
         fontSize: 18,
         color: Colors.grayText,
         fontWeight: '600',
     },
-    emptyTextSmall: { // ADDED
+    emptyTextSmall: { 
         fontSize: 14,
         color: Colors.grayText,
         marginTop: 5,
     },
-
-    // --- Receipt Content Styles ---
     receiptWrapper: {
         width: '100%',
-        maxWidth: 600, // Receipt fixed width for consistent look
+        maxWidth: 600, 
         marginVertical: 10,
     },
     receiptContainer: {
         backgroundColor: Colors.white,
-        paddingHorizontal: 15, // FIX: Added horizontal padding to prevent text cutoff
+        paddingHorizontal: 15, 
         paddingVertical: 15,
         borderWidth: 1,
         borderColor: Colors.borderColor,
     },
-    receiptHeader: { // RENAMED FROM `header` to avoid conflict
+    receiptHeader: { 
         alignItems: 'center',
         marginBottom: 10,
         paddingBottom: 10,
@@ -479,7 +470,7 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         marginRight: 10,
-        borderRadius: 25, // For circular logo effect
+        borderRadius: 25, 
         borderWidth: 1,
         borderColor: Colors.borderColor,
     },
@@ -498,8 +489,6 @@ const styles = StyleSheet.create({
         marginTop: 5,
         fontStyle: 'italic',
     },
-    
-    // Details Section
     details: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -516,8 +505,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: Colors.black,
     },
-    
-    // Paragraph Section
     paragraphContainer: {
         marginBottom: 10,
     },
@@ -526,10 +513,8 @@ const styles = StyleSheet.create({
         lineHeight: 14,
         color: Colors.darkGray,
         marginBottom: 2,
-        textAlign: 'justify', // Added for better text flow
+        textAlign: 'justify', 
     },
-
-    // Table Styles
     table: {
         borderWidth: 1,
         borderColor: Colors.borderColor,
@@ -563,8 +548,6 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.lightGray,
         borderBottomWidth: 0,
     },
-    
-    // Signature/QR Code
     signatureRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -590,8 +573,6 @@ const styles = StyleSheet.create({
         color: Colors.grayText,
         textAlign: 'center',
     },
-
-    // Note Section
     noteSection: {
         paddingVertical: 10,
         borderBottomWidth: 1,
@@ -604,28 +585,23 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
     listContainer: {
-        // No horizontal padding needed here as it's handled by receiptContainer padding
     },
     listItem: {
         flexDirection: 'row',
         marginBottom: 3,
-        // No horizontal padding needed on the row itself
     },
     listItemBullet: {
         fontSize: 10,
         marginRight: 5,
         color: Colors.darkGray,
-        // Aligns the bullet to the start of the line
     },
     listItemText: {
-        flex: 1, // FIX: Ensures text wraps within the available space
+        flex: 1, 
         fontSize: 10,
         lineHeight: 14,
         color: Colors.grayText,
-        textAlign: 'justify', // Added for better text flow
+        textAlign: 'justify',
     },
-    
-    // Footer
     footerNote: {
         fontSize: 10,
         color: Colors.red,

@@ -7,6 +7,7 @@ import {
   Dimensions,
   FlatList,
 } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { getUserDetails } from '../utils/auth';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
@@ -81,7 +82,7 @@ const MenuTree = () => {
   );
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaProvider style={styles.safeArea}>
       {/* Header */}
       <View style={styles.cardHeader}>
         {menuStack.length > 1 ? (
@@ -112,7 +113,7 @@ const MenuTree = () => {
           </Text>
         }
       />
-    </SafeAreaView>
+    </SafeAreaProvider>
   );
 };
 

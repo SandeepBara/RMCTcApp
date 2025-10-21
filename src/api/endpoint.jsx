@@ -17,3 +17,5 @@ export const safSearchApi = `${BASE_URL}/api/property/search-saf`;
 export const safDtlApi = `${BASE_URL}/api/property/get-saf-dtl`;
 export const verificationDtlApi = `${BASE_URL}/api/property/field-verification-dtl`
 export const memoReceiptApi = `${BASE_URL}/api/property/memo-receipt`;
+export const safPaymentReceiptApi = `${BASE_URL}/api/property/payment-receipt`;
+export const safUploadedDocListApi = `${BASE_URL}/api/property/get-uploaded-doc-list`;

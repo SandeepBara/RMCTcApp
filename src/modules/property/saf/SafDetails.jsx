@@ -14,6 +14,8 @@ import RemarksAccordion from "../../../Components/RemarksAccordion";
 import { formatLocalDate, formatLocalDateTime, formatTimeAMPM } from '../../../utils/common';
 import TcVerificationDtlModal from "./component/TcVerificationDtlModal";
 import SAMModal from "./component/SAMModal";
+import PaymentReceiptModal from "./component/PaymentReceiptModal";
+import DocViewModal from "./component/DocViewModal"
 
 function SafDetails() {
     const route = useRoute();
@@ -31,6 +33,7 @@ function SafDetails() {
     const [isShowSamModal, setIsShowSamModal] = useState(false);
     const [isShowFamModal, setIsShowFamModal] = useState(false);
     const [samReceiptId, setSamReceiptId] = useState(null);
+    const [isDocViewModal, setIsDocViewModal] = useState(false);
 
     const actionButtons = [
         {
@@ -55,7 +58,7 @@ function SafDetails() {
         {
             label: "View Document",
             onClick: () => {
-                setButtonType("viewDemand");
+                setIsDocViewModal(true);
             },
             icon: "remove-red-eye",
             show: true,
@@ -436,15 +439,18 @@ function SafDetails() {
                                     `${item?.fromQtr ?? 'NA'} / ${item?.fromFyear ?? 'NA'}`,
                                     `${item?.uptoQtr ?? 'NA'} / ${item?.uptoFyear ?? 'NA'}`,
                                     item?.payableAmt ?? 'N/A',
-                                    (<View style={styles.buttonRow}>
-                                        <TouchableOpacity
-                                            style={styles.button}
-                                            onPress={() => {}}
+                                    (
+                                    <TouchableOpacity
+                                            key={`view-button-${item?.id || index}`} 
+                                            style={styles.button} // Ensure this style has a background and padding
+                                            onPress={() => {
+                                                setIsShowPaymentReceiptModal(true)
+                                                setPaymentReceiptId(item.id);
+                                            }}
                                         >
                                             <Text style={styles.buttonText}>View</Text>
                                         </TouchableOpacity>
-                        
-                                    </View>)
+                                    )
                                     ,
                                 ],
                                 
@@ -527,6 +533,7 @@ function SafDetails() {
                     <View style={styles.buttonRow}>
                         {actionButtons.map((item, index) => (
                             <ActionButton
+                                key={index}
                                 name={item.icon}
                                 label={item.label}
                                 color={item.color || Colors.primary}
@@ -538,6 +545,13 @@ function SafDetails() {
                 )}
 
                 {/* Modals */}
+                {isDocViewModal && (
+                    <DocViewModal
+                        id={safData?.id}
+                        onClose={() => setIsDocViewModal(false)}
+                        token={token}
+                    />
+                )}
                 {isShowVerificationModal && (
                 <TcVerificationDtlModal
                     id={verificationId}
@@ -559,6 +573,9 @@ function SafDetails() {
                     onClose={() => setIsShowFamModal(false)}
                 />
                 )} */}
+                {isShowPaymentReceiptModal&&(
+                    <PaymentReceiptModal id={paymentReceiptId} onClose={()=>setIsShowPaymentReceiptModal(false)} />
+                )}
             </ScrollView>
 
         </KeyboardAvoidingView>
